@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(
-  MaterialApp(home: Home()),
-);
+import 'package:qr_attendance_app/homePage.dart';
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
+void main() {
+  runApp(MaterialApp(
+    home: MyApp(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
 
-class _HomeState extends State<Home> {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('QR ATTENDACNE'),
-        centerTitle: true,
-        backgroundColor: Colors.red[500],
-      ),
-    );
+    return HomePage();
   }
 }
