@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_attendance_app/scan.dart';
+import 'package:qr_attendance_app/generate.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,7 +23,10 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            flatButton("Scan QR CODE", ScanPage()),
+            flatButton("Student", ScanPage()),
+            SizedBox(height: 20.0,),
+            flatButton("Admin", GeneratePage()),
+
           ],
         ),
       ),
