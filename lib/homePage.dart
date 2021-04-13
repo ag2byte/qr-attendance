@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:qr_attendance_app/scan.dart';
-import 'package:qr_attendance_app/generate.dart';
+import 'package:qr_attendance_app/login_student.dart';
+import 'package:qr_attendance_app/login_admin.dart';
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,9 +24,9 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            flatButton("Student", ScanPage()),
+            flatButton("Login for Student", LoginStudentPage()),
             SizedBox(height: 20.0,),
-            flatButton("Admin", GeneratePage()),
+            flatButton("Login for Admin", LoginAdminPage()),
 
           ],
         ),
