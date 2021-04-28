@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:qr_attendance_app/homePage.dart';
 
-
-
 void main() {
   runApp(MaterialApp(
     home: MyApp(),
