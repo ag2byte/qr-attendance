@@ -1,5 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:qr_attendance_app/generate.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class FacultyLoginSchema {
+  final String email;
+  final String password;
+
+  FacultyLoginSchema(this.email, this.password);
+
+  Map toJson() => {
+        'email': email,
+        'password': password,
+      };
+}
 
 
 class LoginAdminPage extends StatefulWidget {
@@ -9,9 +23,11 @@ class LoginAdminPage extends StatefulWidget {
 
 class _LoginAdminPageState extends State<LoginAdminPage> {
   @override
+  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
   Widget build(BuildContext context) {
     TextField passwordField;
-    TextField regnoField;
+    TextField emailField;
         return Scaffold(
           appBar: AppBar(
             title: Text("QR ATTENDANCE SYSTEM"),
@@ -25,16 +41,18 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                  regnoField = TextField(
+                  emailField = TextField(
+                  controller: emailController,
               decoration: InputDecoration(
                   border: UnderlineInputBorder(),
-                  labelText: 'Enter your Teacher ID'),
+                  labelText: 'Enter your Teacher Email ID'),
             ),
             SizedBox(
               height: 10.0,
             ),
               passwordField = TextField(
               obscureText: true,
+              controller: passwordController,
               decoration: InputDecoration(
                   border: UnderlineInputBorder(),
                   labelText: 'Enter your Password'),
@@ -53,6 +71,22 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
     return FlatButton(
       padding: EdgeInsets.all(15.0),
       onPressed: () async {
+         FacultyLoginSchema s1 = new FacultyLoginSchema(emailController.text, passwordController.text);
+        Map data = s1.toJson();
+
+        String body1 = json.encode(data);
+        print(body1);
+        var client = http.Client();
+        try {
+          var uriResponse = await client.post(
+            Uri.parse('https://qrspine.herokuapp.com/tests1'),
+            headers: {"Content-Type": "application/json"},
+            body: body1,
+          );
+          print('sent');
+        } finally {
+          client.close();
+        }
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => widget));
       },
