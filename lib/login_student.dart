@@ -85,7 +85,7 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
         try {
           var uriResponse = await client.post(
             Uri.parse('https://qrspine.herokuapp.com/token'),
-            headers: {"Content-Type": "application/json"},
+            headers: {"Content-Type": "application/json;charset=UTF-8"},
             body: body1,
           );
           print('sent');
@@ -97,11 +97,10 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
           } else {
             print(_response['detail']);
             Fluttertoast.showToast(
-              msg: _response['detail'],
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
-              fontSize: 16.0
-            );
+                msg: _response['detail'],
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                fontSize: 16.0);
           }
         } finally {
           client.close();
