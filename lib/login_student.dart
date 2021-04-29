@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:qr_attendance_app/scan.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class StudemtLoginSchema {
-  final int regno;
+class StudentLoginSchema {
+  final String regno;
   final String password;
+  final bool isStudent;
 
-  StudemtLoginSchema(this.regno, this.password);
+  StudentLoginSchema(this.regno, this.password, this.isStudent);
 
   Map toJson() => {
         'username': regno,
         'password': password,
+        'isStudent': isStudent,
       };
 }
 
@@ -22,13 +25,12 @@ class LoginStudentPage extends StatefulWidget {
 
 class _LoginStudentPageState extends State<LoginStudentPage> {
   @override
-    final passwordController = TextEditingController();
-    final regnoController = TextEditingController();
+  final passwordController = TextEditingController();
+  final regnoController = TextEditingController();
 
   Widget build(BuildContext context) {
     TextField passwordField;
     TextField regnoField;
-   
 
     return Scaffold(
       appBar: AppBar(
@@ -44,11 +46,11 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             regnoField = TextField(
-                controller: regnoController,
-                decoration: InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter your Reg No'),
-                ),
+              controller: regnoController,
+              decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Enter your Reg No'),
+            ),
             SizedBox(
               height: 10.0,
             ),
@@ -58,7 +60,7 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
               decoration: InputDecoration(
                   border: UnderlineInputBorder(),
                   labelText: 'Enter your Password'),
-           ),
+            ),
             SizedBox(
               height: 20.0,
             ),
@@ -73,30 +75,37 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
     return FlatButton(
       padding: EdgeInsets.all(15.0),
       onPressed: () async {
-
-        StudemtLoginSchema s1 = new StudemtLoginSchema(int.parse(regnoController.text), passwordController.text);
+        StudentLoginSchema s1 = new StudentLoginSchema(
+            regnoController.text, passwordController.text, true);
         Map data = s1.toJson();
-
-        // Map data = {
-        //     'username': 809121,
-        //     'password': 'gojofan'
-        //   };
 
         String body1 = json.encode(data);
         print(body1);
         var client = http.Client();
         try {
           var uriResponse = await client.post(
-            Uri.parse('https://qrspine.herokuapp.com/tests'),
+            Uri.parse('https://qrspine.herokuapp.com/token'),
             headers: {"Content-Type": "application/json"},
             body: body1,
           );
           print('sent');
+          print(uriResponse.body);
+          Map _response = json.decode(uriResponse.body);
+          if (_response.containsKey("access_token")) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => widget));
+          } else {
+            print(_response['detail']);
+            Fluttertoast.showToast(
+              msg: _response['detail'],
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              fontSize: 16.0
+            );
+          }
         } finally {
           client.close();
         }
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => widget));
       },
       child: Text(
         text,

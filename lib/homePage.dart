@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:qr_attendance_app/login_student.dart';
 import 'package:qr_attendance_app/login_admin.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
+  
 }
 
 class _HomePageState extends State<HomePage> {
@@ -38,8 +40,18 @@ class _HomePageState extends State<HomePage> {
     return FlatButton(
       padding: EdgeInsets.all(15.0),
       onPressed: () async {
-        Navigator.of(context)
+        var client = http.Client();
+
+        try {
+          var uriResponse = await client.get(
+            Uri.parse('https://qrspine.herokuapp.com/'),
+          );
+        }
+        finally{
+          Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => widget));
+        }
+        
       },
       child: Text(
         text,

@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:qr_attendance_app/generate.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class FacultyLoginSchema {
   final String email;
   final String password;
+  final bool isStudent;
 
-  FacultyLoginSchema(this.email, this.password);
+  FacultyLoginSchema(this.email, this.password, this.isStudent);
 
   Map toJson() => {
-        'email': email,
+        'username': email,
         'password': password,
+        'isStudent': isStudent,
       };
 }
-
 
 class LoginAdminPage extends StatefulWidget {
   @override
@@ -25,24 +27,26 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
   @override
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
+  Map _response;
+
   Widget build(BuildContext context) {
     TextField passwordField;
     TextField emailField;
-        return Scaffold(
-          appBar: AppBar(
-            title: Text("QR ATTENDANCE SYSTEM"),
-            centerTitle: true,
-          ),
-          body: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                  emailField = TextField(
-                  controller: emailController,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("QR ATTENDANCE SYSTEM"),
+        centerTitle: true,
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            emailField = TextField(
+              controller: emailController,
               decoration: InputDecoration(
                   border: UnderlineInputBorder(),
                   labelText: 'Enter your Teacher Email ID'),
@@ -50,7 +54,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
             SizedBox(
               height: 10.0,
             ),
-              passwordField = TextField(
+            passwordField = TextField(
               obscureText: true,
               controller: passwordController,
               decoration: InputDecoration(
@@ -71,7 +75,8 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
     return FlatButton(
       padding: EdgeInsets.all(15.0),
       onPressed: () async {
-         FacultyLoginSchema s1 = new FacultyLoginSchema(emailController.text, passwordController.text);
+        FacultyLoginSchema s1 = new FacultyLoginSchema(
+            emailController.text, passwordController.text, false);
         Map data = s1.toJson();
 
         String body1 = json.encode(data);
@@ -79,16 +84,30 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
         var client = http.Client();
         try {
           var uriResponse = await client.post(
-            Uri.parse('https://qrspine.herokuapp.com/tests1'),
+            Uri.parse('https://qrspine.herokuapp.com/token'),
             headers: {"Content-Type": "application/json"},
             body: body1,
           );
           print('sent');
+          print(uriResponse.body); //access
+          Map _response = json.decode(uriResponse.body);
+          print(_response.keys);
+          if (_response.containsKey("access_token")) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => widget));
+          } else {
+            print(_response['detail']);
+            Fluttertoast.showToast(
+                msg: _response['detail'],
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                fontSize: 16.0);
+          }
         } finally {
           client.close();
         }
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => widget));
+        // Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (context) => widget));
       },
       child: Text(
         text,
