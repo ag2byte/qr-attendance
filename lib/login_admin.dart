@@ -89,10 +89,11 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
             body: body1,
           );
           print('sent');
-          print(uriResponse.body); //access
+          // print(uriResponse.body); //access
           Map _response = json.decode(uriResponse.body);
-          print(_response.keys);
+          // print(_response.keys);
           if (_response.containsKey("access_token")) {
+            client.close();
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => widget));
           } else {
@@ -100,10 +101,12 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
             Fluttertoast.showToast(
                 msg: _response['detail'],
                 toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                fontSize: 16.0);
+                gravity: ToastGravity.SNACKBAR,
+                fontSize: 12.0);
           }
-        } finally {
+        } 
+      catch(Error){print(Error);}
+        finally {
           client.close();
         }
         // Navigator.of(context)

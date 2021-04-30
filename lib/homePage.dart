@@ -48,6 +48,7 @@ class _HomePageState extends State<HomePage> {
           );
         }
         finally{
+          client.close();
           Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => widget));
         }

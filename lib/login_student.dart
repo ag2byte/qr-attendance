@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_attendance_app/scan.dart';
 import 'package:http/http.dart' as http;
@@ -82,6 +83,7 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
         String body1 = json.encode(data);
         print(body1);
         var client = http.Client();
+        print(client.hashCode);
         try {
           var uriResponse = await client.post(
             Uri.parse('https://qrspine.herokuapp.com/token'),
@@ -89,9 +91,10 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
             body: body1,
           );
           print('sent');
-          print(uriResponse.body);
+          // print(uriResponse.body);
           Map _response = json.decode(uriResponse.body);
           if (_response.containsKey("access_token")) {
+            client.close();
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => widget));
           } else {
@@ -99,11 +102,13 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
             Fluttertoast.showToast(
               msg: _response['detail'],
               toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
-              fontSize: 16.0
+              gravity: ToastGravity.SNACKBAR,
+              fontSize: 12.0
             );
-          }
-        } finally {
+          } 
+        }
+         catch(Error){print(Error);} 
+        finally {
           client.close();
         }
       },
