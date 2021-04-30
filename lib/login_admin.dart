@@ -85,7 +85,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
         try {
           var uriResponse = await client.post(
             Uri.parse('https://qrspine.herokuapp.com/token'),
-            headers: {"Content-Type": "application/json"},
+            headers: {"Content-Type": "application/json;charset=UTF-8"},
             body: body1,
           );
           print('sent');
