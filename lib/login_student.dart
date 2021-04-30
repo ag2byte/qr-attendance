@@ -93,7 +93,7 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
           // print(uriResponse.body);
           Map _response = json.decode(uriResponse.body);
           if (_response.containsKey("access_token")) {
-            client.close();
+            // client.close();
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => widget));
           } else {

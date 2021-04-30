@@ -93,7 +93,8 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
           Map _response = json.decode(uriResponse.body);
           // print(_response.keys);
           if (_response.containsKey("access_token")) {
-            client.close();
+            // print('Client 1 close');
+            // client.close();
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => widget));
           } else {
@@ -104,9 +105,10 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
                 gravity: ToastGravity.SNACKBAR,
                 fontSize: 12.0);
           }
-        } 
-      catch(Error){print(Error);}
-        finally {
+        } catch (Error) {
+          print(Error);
+        } finally {
+          print('Client 2 close');
           client.close();
         }
         // Navigator.of(context)
