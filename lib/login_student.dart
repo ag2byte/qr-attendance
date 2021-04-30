@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_attendance_app/scan.dart';
 import 'package:http/http.dart' as http;
