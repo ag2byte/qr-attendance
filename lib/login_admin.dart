@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:qr_attendance_app/generate.dart';
+import 'package:qr_attendance_app/classdetails.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class FacultyLoginSchema {
@@ -27,6 +29,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
   @override
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
+  String id;
   Map _response;
 
   Widget build(BuildContext context) {
@@ -64,7 +67,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
             SizedBox(
               height: 20.0,
             ),
-            flatButton("Login", GeneratePage()),
+            flatButton("Login", ClassDetailsPage(id)),
           ],
         ),
       ),
@@ -95,8 +98,9 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
           if (_response.containsKey("access_token")) {
             // print('Client 1 close');
             // client.close();
+            id = _response["access_token"];
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => widget));
+                .push(MaterialPageRoute(builder: (context) => ClassDetailsPage(id)));
           } else {
             print(_response['detail']);
             Fluttertoast.showToast(
@@ -108,7 +112,6 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
         } catch (Error) {
           print(Error);
         } finally {
-          print('Client 2 close');
           client.close();
         }
         // Navigator.of(context)
