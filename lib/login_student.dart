@@ -27,44 +27,46 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
   @override
   final passwordController = TextEditingController();
   final regnoController = TextEditingController();
+  Map _response;
 
   Widget build(BuildContext context) {
     TextField passwordField;
     TextField regnoField;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("QR ATTENDANCE SYSTEM"),
-        centerTitle: true,
-      ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            regnoField = TextField(
-              controller: regnoController,
-              decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Enter your Reg No'),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            passwordField = TextField(
-              obscureText: true,
-              controller: passwordController,
-              decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Enter your Password'),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            flatButton("Login", ScanPage()),
+    String regno;
+        return Scaffold(
+          appBar: AppBar(
+            title: Text("QR ATTENDANCE SYSTEM"),
+            centerTitle: true,
+          ),
+          body: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                regnoField = TextField(
+                  controller: regnoController,
+                  decoration: InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Enter your Reg No'),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                passwordField = TextField(
+                  obscureText: true,
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Enter your Password'),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                flatButton("Login", ScanPage(regno)),
           ],
         ),
       ),
@@ -92,10 +94,11 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
           print('sent');
           // print(uriResponse.body);
           Map _response = json.decode(uriResponse.body);
+          String regno = regnoController.text;
           if (_response.containsKey("access_token")) {
             // client.close();
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => widget));
+                .push(MaterialPageRoute(builder: (context) => ScanPage(regno)));
           } else {
             print(_response['detail']);
             Fluttertoast.showToast(

@@ -8,23 +8,25 @@ import 'package:flutter/rendering.dart';
 
 class GeneratePage extends StatefulWidget {
   DateTime date;
+  String cid;
   TimeOfDay start;
   TimeOfDay end;
   String classname;
   String id;
-  GeneratePage(this.date,this.start,this.end,this.classname,this.id);
+  GeneratePage(this.date,this.start,this.end,this.classname,this.id,this.cid);
   @override
   
-  State<StatefulWidget> createState() => GeneratePageState(date,start,end,classname,id);
+  State<StatefulWidget> createState() => GeneratePageState(date,start,end,classname,id,cid);
 }
 
 class GeneratePageState extends State<GeneratePage> {
   DateTime date;
   TimeOfDay start;
   TimeOfDay end;
+  String cid;
   String id;
   String classname;
-  GeneratePageState(this.date,this.start,this.end,this.classname,this.id);
+  GeneratePageState(this.date,this.start,this.end,this.classname,this.id,this.cid);
     // already generated qr code when the page opens
   
   
@@ -38,7 +40,7 @@ class GeneratePageState extends State<GeneratePage> {
      }
 
   Widget build(BuildContext context) {
-    String qrData = formatTimeOfDay(start, date) +","+ formatTimeOfDay(end, date) +","+ classname + "," +id;
+    String qrData = formatTimeOfDay(start, date) +","+ formatTimeOfDay(end, date) +","+ classname + "," +id+","+cid;
     print(qrData);
     return Scaffold(
       appBar: AppBar(
