@@ -6,28 +6,34 @@ import 'dart:async';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
-class ClassDetailSchema {
-  final String classname;
-  final DateTime start;
-  final DateTime end;
-  final String facultyid;
 
-  ClassDetailSchema(this.classname, this.start, this.end, this.facultyid);
+class AttendanceSchema {
+  final String cid;
+  final String sid;
+  final DateTime scantime;
+
+  AttendanceSchema(this.cid, this.sid, this.scantime);
+
+  
 
   Map toJson() => {
-        'classname': classname,
-        'starttime': start,
-        'endtime': end,
-        'facultyid': facultyid,
+        'classid': cid,
+        'studentid': sid,
+        'scantime': scantime,
       };
 }
 
+
 class ScanPage extends StatefulWidget {
+  final String sid;
+  ScanPage(this.sid);
   @override
-  _ScanPageState createState() => _ScanPageState();
+  _ScanPageState createState() => _ScanPageState(sid);
 }
 
 class _ScanPageState extends State<ScanPage> {
+  String sid;
+  _ScanPageState(this.sid);
   String qrCodeResult = "Scan The QR for Attendance";
   DateTime start;
   DateTime end;
@@ -68,11 +74,11 @@ class _ScanPageState extends State<ScanPage> {
                   qrCodeResult = codeScanner;
                 });
                 var details = codeScanner.split(",");
+                print(details);
                 start = DateTime.parse(details[0]);
                 end = DateTime.parse(details[1]);
 
-                ClassDetailSchema s1 =
-                    new ClassDetailSchema(details[2], start, end, details[3]);
+                AttendanceSchema s1 = new  AttendanceSchema(details[4],sid,DateTime.now());
                 Map data = s1.toJson();
                 print(data);
 
@@ -84,7 +90,7 @@ class _ScanPageState extends State<ScanPage> {
                 print(client.hashCode);
                 try {
                   var uriResponse = await client.post(
-                    Uri.parse('https://qrspine.herokuapp.com/tests'),
+                    Uri.parse('https://qrspine.herokuapp.com/attend'),
                     headers: {"Content-Type": "application/json;charset=UTF-8"},
                     body: body1,
                   );
