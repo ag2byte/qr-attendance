@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'dart:ui';
 import 'package:intl/intl.dart';
 import 'package:flutter/rendering.dart';
 
-
-
 class GeneratePage extends StatefulWidget {
-  DateTime date;
-  String cid;
-  TimeOfDay start;
-  TimeOfDay end;
-  String classname;
-  String id;
-  GeneratePage(this.date,this.start,this.end,this.classname,this.id,this.cid);
+  final DateTime date;
+  final String cid;
+  final TimeOfDay start;
+  final TimeOfDay end;
+  final String classname;
+  final String id;
+  GeneratePage(
+      this.date, this.start, this.end, this.classname, this.id, this.cid);
   @override
-  
-  State<StatefulWidget> createState() => GeneratePageState(date,start,end,classname,id,cid);
+  State<StatefulWidget> createState() =>
+      GeneratePageState(date, start, end, classname, id, cid);
 }
 
 class GeneratePageState extends State<GeneratePage> {
@@ -26,21 +24,28 @@ class GeneratePageState extends State<GeneratePage> {
   String cid;
   String id;
   String classname;
-  GeneratePageState(this.date,this.start,this.end,this.classname,this.id,this.cid);
-    // already generated qr code when the page opens
-  
-  
+  GeneratePageState(
+      this.date, this.start, this.end, this.classname, this.id, this.cid);
 
-  @override
   String formatTimeOfDay(TimeOfDay tod, DateTime date) {
     final now = date;
     final dt = DateTime(now.year, now.month, now.day, tod.hour, tod.minute);
-    final format =  DateFormat('yyyy-MM-dd HH:MM:ss');  //"6:00 AM"
+    final format = DateFormat('yyyy-MM-dd HH:MM:ss');
     return format.format(dt);
-     }
+  }
 
+  @override
   Widget build(BuildContext context) {
-    String qrData = formatTimeOfDay(start, date) +","+ formatTimeOfDay(end, date) +","+ classname + "," +id+","+cid;
+    print(cid);
+    String qrData = formatTimeOfDay(start, date) +
+        "," +
+        formatTimeOfDay(end, date) +
+        "," +
+        classname +
+        "," +
+        id +
+        "," +
+        cid;
     print(qrData);
     return Scaffold(
       appBar: AppBar(
@@ -54,22 +59,15 @@ class GeneratePageState extends State<GeneratePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             QrImage(
-              
-              //plce where the QR Image will be shown
               data: qrData,
             ),
             SizedBox(
               height: 40.0,
             ),
-          
           ],
         ),
       ),
     );
-
-
-    
-
   }
 
   final qrdataFeed = TextEditingController();

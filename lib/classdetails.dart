@@ -4,7 +4,6 @@ import 'package:qr_attendance_app/generate.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
-import 'dart:async';
 
 class ClassDetailSchema {
   final String classname;
@@ -22,9 +21,8 @@ class ClassDetailSchema {
       };
 }
 
-
 class ClassDetailsPage extends StatefulWidget {
-  String id;
+  final String id;
   ClassDetailsPage(this.id);
   @override
   _ClassDetailsPageState createState() => _ClassDetailsPageState(id);
@@ -33,28 +31,38 @@ class ClassDetailsPage extends StatefulWidget {
 class _ClassDetailsPageState extends State<ClassDetailsPage> {
   String id;
   _ClassDetailsPageState(this.id);
-  @override
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
   final classnameContoller = TextEditingController();
-  
-  Map _response;
-  DateTime PickedDate = DateTime.now();
+  DateTime pickeddate = DateTime.now();
   TimeOfDay start = TimeOfDay.now();
   TimeOfDay end = TimeOfDay.now();
   DateTime start1;
   String cid;
   DateTime end1;
   dynamic myEncode(dynamic item) {
-                  if (item is DateTime) {
-                    return item.toIso8601String();
-                  }
-                  return item;
-                }
+    if (item is DateTime) {
+      return item.toIso8601String();
+    }
+    return item;
+  }
 
+  @override
   Widget build(BuildContext context) {
-    TextField passwordField;
-    TextField classnameField;
+    int t = end.minute;
+    int t1 = start.minute;
+    String endmin;
+    String startmin;
+    if (t < 10) {
+      endmin = "0" + t.toString();
+    } else {
+      endmin = t.toString();
+    }
+    if (t1 < 10) {
+      startmin = "0" + t1.toString();
+    } else {
+      startmin = t1.toString();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -69,8 +77,7 @@ class _ClassDetailsPageState extends State<ClassDetailsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-
-            classnameField = TextField(
+            TextField(
               controller: classnameContoller,
               decoration: InputDecoration(
                   border: UnderlineInputBorder(),
@@ -79,138 +86,123 @@ class _ClassDetailsPageState extends State<ClassDetailsPage> {
             SizedBox(
               height: 10.0,
             ),
-
-
             ListTile(
-              title: Text("${PickedDate.day}/${PickedDate.month}/${PickedDate.year}"),
+              title: Text(
+                  "${pickeddate.day}/${pickeddate.month}/${pickeddate.year}"),
               trailing: Icon(Icons.keyboard_arrow_down),
               onTap: _pickDate,
-
             ),
-
-               SizedBox(
+            SizedBox(
               height: 10.0,
             ),
-
-
             ListTile(
-              title: Text("${start.hour}:${start.minute}"),
+              title: Text("${start.hour}" + ":" + startmin),
               trailing: Icon(Icons.keyboard_arrow_down),
               onTap: _pickStartTime,
-
             ),
-
-               SizedBox(
+            SizedBox(
               height: 10.0,
             ),
-
-
             ListTile(
-              title: Text("${end.hour}:${end.minute}"),
+              title: Text("${end.hour}" + ":" + endmin),
               trailing: Icon(Icons.keyboard_arrow_down),
               onTap: _pickEndTime,
-
             ),
-          
             SizedBox(
               height: 20.0,
             ),
-            flatButton("Generate The QR", GeneratePage(PickedDate, start, end , classnameContoller.text,id,cid)),
+            flatButton(
+                "Generate The QR",
+                GeneratePage(
+                    pickeddate, start, end, classnameContoller.text, id, cid)),
           ],
         ),
       ),
     );
   }
 
-  _pickDate() async{
+  _pickDate() async {
     DateTime date = await showDatePicker(
       context: context,
-      firstDate: DateTime(DateTime.now().year-5),
-      lastDate: DateTime(DateTime.now().year+5),
+      firstDate: DateTime(DateTime.now().year - 5),
+      lastDate: DateTime(DateTime.now().year + 5),
       initialDate: DateTime.now(),
     );
 
-    if(date!=null)
-    setState(() {
-      PickedDate = date;
-    });
+    if (date != null)
+      setState(() {
+        pickeddate = date;
+      });
   }
 
-  _pickStartTime() async{
+  _pickStartTime() async {
     TimeOfDay time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
 
-    if(time!=null)
-    setState(() {
-       start = time;
-    });
+    if (time != null)
+      setState(() {
+        start = time;
+      });
   }
 
-
-  _pickEndTime() async{
+  _pickEndTime() async {
     TimeOfDay time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
 
-    if(time!=null)
-    setState(() {
-       end = time;
-    });
+    if (time != null)
+      setState(() {
+        end = time;
+      });
   }
 
   String formatTimeOfDay(TimeOfDay tod, DateTime date) {
     final now = date;
     final dt = DateTime(now.year, now.month, now.day, tod.hour, tod.minute);
-    final format =  DateFormat('yyyy-MM-dd HH:MM:ss');  //"6:00 AM"
+    final format = DateFormat('yyyy-MM-dd HH:MM:ss'); 
     return format.format(dt);
-     }
+  }
 
   Widget flatButton(String text, Widget widget) {
     return FlatButton(
       padding: EdgeInsets.all(15.0),
       onPressed: () async {
-        // print(id);
-        // print(formatTimeOfDay(start, PickedDate));
-        // print(formatTimeOfDay(end, PickedDate));
-        // print(classnameContoller.text);
-         start1 = DateTime.parse(formatTimeOfDay(start, PickedDate));
-          end1 = DateTime.parse(formatTimeOfDay(end, PickedDate));
-        ClassDetailSchema s1 = new ClassDetailSchema(classnameContoller.text, start1, end1, id);
+        start1 = DateTime.parse(formatTimeOfDay(start, pickeddate));
+        end1 = DateTime.parse(formatTimeOfDay(end, pickeddate));
+        ClassDetailSchema s1 =
+            new ClassDetailSchema(classnameContoller.text, start1, end1, id);
         Map data = s1.toJson();
         print(data);
-        
-         if (start.hour>end.hour) {
-            Fluttertoast.showToast(
-                msg: "Please check the timings",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.SNACKBAR,
-                fontSize: 12.0);
-          }
-        else{
-          String body1 = json.encode(data, toEncodable: myEncode);
-                
 
-                print(body1);
-                var client = http.Client();
-                try {
-                  var uriResponse = await client.post(
-                    Uri.parse('https://qrspine.herokuapp.com/addclass'),
-                    headers: {"Content-Type": "application/json;charset=UTF-8"},
-                    body: body1,
-                  );
-                  print('sent');
-                  print(uriResponse.body);
-                  Map _response = json.decode(uriResponse.body);
-                  cid = _response['cid'];
-                }
-                finally{
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => GeneratePage(PickedDate, start,end,classnameContoller.text,id,cid))
-             );
-                }
+        if (start.hour > end.hour) {
+          Fluttertoast.showToast(
+              msg: "Please check the timings",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.SNACKBAR,
+              fontSize: 12.0);
+        } else {
+          String body1 = json.encode(data, toEncodable: myEncode);
+
+          print(body1);
+          var client = http.Client();
+          try {
+            var uriResponse = await client.post(
+              Uri.parse('https://qrspine.herokuapp.com/addclass'),
+              headers: {"Content-Type": "application/json;charset=UTF-8"},
+              body: body1,
+            );
+            print('sent');
+            print(uriResponse.body);
+            Map _response = json.decode(uriResponse.body);
+            cid = _response['cid'];
+          } finally {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => GeneratePage(
+                    pickeddate, start, end, classnameContoller.text, id, cid)));
+          }
         }
       },
       child: Text(

@@ -1,11 +1,9 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_attendance_app/attendance.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:async';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
-
 
 class AttendanceSchema {
   final String cid;
@@ -14,15 +12,12 @@ class AttendanceSchema {
 
   AttendanceSchema(this.cid, this.sid, this.scantime);
 
-  
-
   Map toJson() => {
         'classid': cid,
         'studentid': sid,
         'scantime': scantime,
       };
 }
-
 
 class ScanPage extends StatefulWidget {
   final String sid;
@@ -37,12 +32,14 @@ class _ScanPageState extends State<ScanPage> {
   String qrCodeResult = "Scan The QR for Attendance";
   DateTime start;
   DateTime end;
+  Map _response;
   dynamic myEncode(dynamic item) {
-                  if (item is DateTime) {
-                    return item.toIso8601String();
-                  }
-                  return item;
-                }
+    if (item is DateTime) {
+      return item.toIso8601String();
+    }
+    return item;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,13 +53,6 @@ class _ScanPageState extends State<ScanPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text(
-              qrCodeResult,
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-              textAlign: TextAlign.center,
-            ),
             SizedBox(
               height: 20.0,
             ),
@@ -78,12 +68,12 @@ class _ScanPageState extends State<ScanPage> {
                 start = DateTime.parse(details[0]);
                 end = DateTime.parse(details[1]);
 
-                AttendanceSchema s1 = new  AttendanceSchema(details[4],sid,DateTime.now());
+                AttendanceSchema s1 =
+                    new AttendanceSchema(details[4], sid, DateTime.now());
                 Map data = s1.toJson();
                 print(data);
 
                 String body1 = json.encode(data, toEncodable: myEncode);
-                
 
                 print(body1);
                 var client = http.Client();
@@ -94,18 +84,28 @@ class _ScanPageState extends State<ScanPage> {
                     headers: {"Content-Type": "application/json;charset=UTF-8"},
                     body: body1,
                   );
-                  print('sent');
-                  print(uriResponse.body);
-                  Map _response = json.decode(uriResponse.body);
-                }
-                finally{
+                  // print('sent');
+                  // print(uriResponse.body);
+                  _response = json.decode(uriResponse.body);
+                } finally {
+                  if(_response["present"])
+                  {
                   Fluttertoast.showToast(
-
                     msg: "Attendace added for class " + details[2],
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.SNACKBAR,
-                    fontSize: 12.0,
+                    fontSize: 20.0,
                   );
+                  }
+                  else{
+                    Fluttertoast.showToast(
+                    msg: "you have scanned late please contact the faculty",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.SNACKBAR,
+                    fontSize: 20.0,
+                  );
+
+                  }
                 }
               },
               child: Text(
@@ -116,10 +116,53 @@ class _ScanPageState extends State<ScanPage> {
               shape: RoundedRectangleBorder(
                   side: BorderSide(color: Colors.blue, width: 3.0),
                   borderRadius: BorderRadius.circular(20.0)),
-            )
+            ),
+             SizedBox(
+              height: 20.0,
+            ),
+            flatButton("See Attendance", AttendancePage(_response)),
           ],
         ),
       ),
     );
   }
+  Widget flatButton(String text, Widget widget) {
+    return FlatButton(
+      padding: EdgeInsets.all(15.0),
+      onPressed: () async {
+      //  AttendanceSchema s1 = new AttendanceSchema(
+      //      "show attendance", sid, DateTime.now());
+      //   Map data = s1.toJson();
+
+      //   String body1 = json.encode(data, toEncodable: myEncode);
+      //   print(body1);
+        
+        var client = http.Client();
+        print(client.hashCode);
+        try {
+          var uriResponse = await client.get(
+            Uri.parse('https://qrspine.herokuapp.com/tests?res='+sid),
+            headers: {"Content-Type": "application/json;charset=UTF-8"},
+          );
+          print('sent');
+          Map _response = json.decode(uriResponse.body);
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => AttendancePage(_response)));
+        } 
+        finally {
+          client.close();
+        }
+      },
+      child: Text(
+        text,
+        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+      ),
+      shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.blue, width: 3.0),
+          borderRadius: BorderRadius.circular(20.0)),
+    );
+  }
 }
+
+
+
