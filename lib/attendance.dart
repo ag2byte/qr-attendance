@@ -15,7 +15,6 @@ class _AttendancePageState extends State<AttendancePage> {
   _AttendancePageState(this.attendance);
   @override
   Widget build(BuildContext context) {
-    String regno;
     print(attendance);
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +38,7 @@ class _AttendancePageState extends State<AttendancePage> {
                     return new Row(
                       children: <Widget>[
                         SizedBox(height: 50),
-                        new Text('${key1} : '),
+                        new Text(key1 + ': '),
                         new Text(attendance[key1].toString()+'%'),
                       ],
                       
