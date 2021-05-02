@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:qr_attendance_app/generate.dart';
 import 'package:qr_attendance_app/classdetails.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:async';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class FacultyLoginSchema {
@@ -26,15 +24,11 @@ class LoginAdminPage extends StatefulWidget {
 }
 
 class _LoginAdminPageState extends State<LoginAdminPage> {
-  @override
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
   String id;
-  Map _response;
-
+  @override
   Widget build(BuildContext context) {
-    TextField passwordField;
-    TextField emailField;
     return Scaffold(
       appBar: AppBar(
         title: Text("QR ATTENDANCE SYSTEM"),
@@ -48,7 +42,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            emailField = TextField(
+            TextField(
               controller: emailController,
               decoration: InputDecoration(
                   border: UnderlineInputBorder(),
@@ -57,7 +51,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
             SizedBox(
               height: 10.0,
             ),
-            passwordField = TextField(
+            TextField(
               obscureText: true,
               controller: passwordController,
               decoration: InputDecoration(
@@ -92,15 +86,11 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
             body: body1,
           );
           print('sent');
-          // print(uriResponse.body); //access
           Map _response = json.decode(uriResponse.body);
-          // print(_response.keys);
           if (_response.containsKey("access_token")) {
-            // print('Client 1 close');
-            // client.close();
             id = _response["access_token"];
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => ClassDetailsPage(id)));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => ClassDetailsPage(id)));
           } else {
             print(_response['detail']);
             Fluttertoast.showToast(
@@ -114,8 +104,6 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
         } finally {
           client.close();
         }
-        // Navigator.of(context)
-        //     .push(MaterialPageRoute(builder: (context) => widget));
       },
       child: Text(
         text,

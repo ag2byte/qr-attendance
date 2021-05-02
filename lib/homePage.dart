@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:qr_attendance_app/login_student.dart';
 import 'package:qr_attendance_app/login_admin.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
-  
 }
 
 class _HomePageState extends State<HomePage> {
@@ -27,9 +25,10 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             flatButton("Login for Student", LoginStudentPage()),
-            SizedBox(height: 20.0,),
+            SizedBox(
+              height: 20.0,
+            ),
             flatButton("Login for Admin", LoginAdminPage()),
-
           ],
         ),
       ),
@@ -43,16 +42,14 @@ class _HomePageState extends State<HomePage> {
         var client = http.Client();
 
         try {
-          var uriResponse = await client.get(
+          await client.get(
             Uri.parse('https://qrspine.herokuapp.com/'),
           );
-        }
-        finally{
+        } finally {
           client.close();
           Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => widget));
+              .push(MaterialPageRoute(builder: (context) => widget));
         }
-        
       },
       child: Text(
         text,
