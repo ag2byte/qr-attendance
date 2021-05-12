@@ -88,23 +88,20 @@ class _ScanPageState extends State<ScanPage> {
                   // print(uriResponse.body);
                   _response = json.decode(uriResponse.body);
                 } finally {
-                  if(_response["present"])
-                  {
-                  Fluttertoast.showToast(
-                    msg: "Attendace added for class " + details[2],
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.SNACKBAR,
-                    fontSize: 20.0,
-                  );
-                  }
-                  else{
+                  if (_response["present"]) {
                     Fluttertoast.showToast(
-                    msg: "you have scanned late please contact the faculty",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.SNACKBAR,
-                    fontSize: 20.0,
-                  );
-
+                      msg: "Attendace added for class " + details[2],
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.SNACKBAR,
+                      fontSize: 20.0,
+                    );
+                  } else {
+                    Fluttertoast.showToast(
+                      msg: "you have scanned late please contact the faculty",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.SNACKBAR,
+                      fontSize: 20.0,
+                    );
                   }
                 }
               },
@@ -117,7 +114,7 @@ class _ScanPageState extends State<ScanPage> {
                   side: BorderSide(color: Colors.blue, width: 3.0),
                   borderRadius: BorderRadius.circular(20.0)),
             ),
-             SizedBox(
+            SizedBox(
               height: 20.0,
             ),
             flatButton("See Attendance", AttendancePage(_response)),
@@ -126,30 +123,31 @@ class _ScanPageState extends State<ScanPage> {
       ),
     );
   }
+
   Widget flatButton(String text, Widget widget) {
     return FlatButton(
       padding: EdgeInsets.all(15.0),
       onPressed: () async {
-      //  AttendanceSchema s1 = new AttendanceSchema(
-      //      "show attendance", sid, DateTime.now());
-      //   Map data = s1.toJson();
+        //  AttendanceSchema s1 = new AttendanceSchema(
+        //      "show attendance", sid, DateTime.now());
+        //   Map data = s1.toJson();
 
-      //   String body1 = json.encode(data, toEncodable: myEncode);
-      //   print(body1);
-        
+        //   String body1 = json.encode(data, toEncodable: myEncode);
+        //   print(body1);
+
         var client = http.Client();
         print(client.hashCode);
         try {
           var uriResponse = await client.get(
-            Uri.parse('https://qrspine.herokuapp.com/tests?res='+sid),
+            Uri.parse('https://qrspine.herokuapp.com/getattendance?res=' + sid),
             headers: {"Content-Type": "application/json;charset=UTF-8"},
           );
           print('sent');
+          // print(uriResponse.body);
           Map _response = json.decode(uriResponse.body);
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => AttendancePage(_response)));
-        } 
-        finally {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AttendancePage(_response)));
+        } finally {
           client.close();
         }
       },
@@ -163,6 +161,3 @@ class _ScanPageState extends State<ScanPage> {
     );
   }
 }
-
-
-
