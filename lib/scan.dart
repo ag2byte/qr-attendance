@@ -134,7 +134,7 @@ class _ScanPageState extends State<ScanPage> {
 
         //   String body1 = json.encode(data, toEncodable: myEncode);
         //   print(body1);
-        // fceicjiecjcoc
+      
 
         var client = http.Client();
         print(client.hashCode);
