@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qr_attendance_app/scan.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -26,43 +28,121 @@ class LoginStudentPage extends StatefulWidget {
 class _LoginStudentPageState extends State<LoginStudentPage> {
   final passwordController = TextEditingController();
   final regnoController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     String regno;
     return Scaffold(
       appBar: AppBar(
-        title: Text("QR ATTENDANCE SYSTEM"),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  stops: [0.5, 1],
+                  colors: [Color(0xff661EFF), Color(0xffFFA3FD)])),
+        ),
+        title: Text(
+          "",
+          style: TextStyle(fontFamily: "Poppins", fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TextField(
-              controller: regnoController,
-              decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Enter your Reg No'),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            TextField(
-              obscureText: true,
-              controller: passwordController,
-              decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Enter your Password'),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            flatButton("Login", ScanPage(regno)),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+             mainAxisAlignment: MainAxisAlignment.center,
+             crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              new Padding(padding: const EdgeInsets.only(top: 20)),
+
+              SvgPicture.asset(
+                "assets/student.svg",
+                height: 200,
+                width: 181,
+              ),
+              //("assets/student.svg",height : 340,
+              //width: 181,),
+              new Padding(padding: const EdgeInsets.only(top: 20)),
+
+              Center(child: Text('LOGIN',style: TextStyle(fontFamily: 'Poppins',fontSize: 32,fontWeight: FontWeight.w700),)),
+
+              new Padding(padding: const EdgeInsets.only(top: 20)),
+
+              Container(
+                height: 64,
+                width: 325,
+
+                decoration: BoxDecoration(
+                  color: Color(0xffEFF0F6),
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+
+                ),
+                child : TextField(
+                  controller: regnoController,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      prefixIcon:Icon(Icons.mail_outline ),
+
+                  //    border: UnderlineInputBorder(),
+                      labelText: 'Registration no.'),
+                ),
+
+              ),
+
+              new Padding(padding: const EdgeInsets.only(top: 40)),
+
+              //new Padding(padding: const EdgeInsets.only(top: 20)),
+
+              Container(
+                height: 64,
+                width: 295,
+
+                decoration: BoxDecoration(
+                  color: Color(0xffFCFCFC),
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                  border: Border(
+                    top:  BorderSide(
+                      color: Colors.purple,
+                      width: 0.7,
+                    ),
+                    bottom:  BorderSide(
+                      color: Colors.purple,
+                      width: 0.7,
+                    ),
+                    left:  BorderSide(
+                      color: Colors.purple,
+                      width: 0.7,
+                    ),
+                    right:  BorderSide(
+                      color: Colors.purple,
+                      width: 0.7,
+                    ),
+                  ),
+                ),
+
+                child: TextField(
+                  obscureText: true,
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      prefixIcon:Icon(Icons.remove_red_eye_outlined ),
+                     // border: UnderlineInputBorder(),
+                      labelText: 'Password',
+                  suffixIcon: Icon(Icons.clear)),
+
+                ),
+              ),
+
+              //new Padding(padding: const EdgeInsets.only(top: 20)),
+              new Padding(padding: const EdgeInsets.only(top: 20)),
+
+              flatButton("Login", ScanPage(regno)),
+            ],
+          ),
         ),
       ),
     );
@@ -70,7 +150,7 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
 
   Widget flatButton(String text, Widget widget) {
     return FlatButton(
-      padding: EdgeInsets.all(15.0),
+      padding: EdgeInsets.all(20.0),
       onPressed: () async {
         StudentLoginSchema s1 = new StudentLoginSchema(
             regnoController.text, passwordController.text, true);
@@ -108,10 +188,11 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
       },
       child: Text(
         text,
-        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+        style: TextStyle(color: Color(0xffF7F7FC),fontFamily: "Poppins", fontWeight:FontWeight.w600),
       ),
+      color: Color(0xff5F2EEA),
       shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.blue, width: 3.0),
+        //  side: BorderSide(color: Colors.blue, width: 3.0),
           borderRadius: BorderRadius.circular(20.0)),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_attendance_app/generate.dart';
 import 'dart:convert';
@@ -66,56 +67,109 @@ class _ClassDetailsPageState extends State<ClassDetailsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("QR ATTENDANCE SYSTEM"),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  stops: [0.5,1],
+
+                  colors: [Color(0xff661EFF), Color(0xffFFA3FD)])),
+
+        ),
+        title: Text("Class Builder",style: TextStyle(fontFamily: "Poppins",fontWeight: FontWeight.bold),),
         centerTitle: true,
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TextField(
-              controller: classnameContoller,
-              decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Enter the class name'),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            ListTile(
-              title: Text(
-                  "${pickeddate.day}/${pickeddate.month}/${pickeddate.year}"),
-              trailing: Icon(Icons.keyboard_arrow_down),
-              onTap: _pickDate,
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            ListTile(
-              title: Text("${start.hour}" + ":" + startmin),
-              trailing: Icon(Icons.keyboard_arrow_down),
-              onTap: _pickStartTime,
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            ListTile(
-              title: Text("${end.hour}" + ":" + endmin),
-              trailing: Icon(Icons.keyboard_arrow_down),
-              onTap: _pickEndTime,
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            flatButton(
-                "Generate The QR",
-                GeneratePage(
-                    pickeddate, start, end, classnameContoller.text, id, cid)),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              new Padding(padding: const EdgeInsets.only(top: 20)),
+
+              SvgPicture.asset(
+                "assets/classbuilder.svg",
+                height: 200,
+                width: 181,
+              ),
+
+              new Padding(padding: const EdgeInsets.only(top: 20)),
+
+              Container(
+                height: 64,
+                width: 325,
+
+                decoration: BoxDecoration(
+                  color: Color(0xffEFF0F6),
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+
+                ),
+                child: TextField(
+                  controller: classnameContoller,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      prefixIcon:Icon(Icons.edit_sharp ),
+                      //  border: UnderlineInputBorder(),
+                      //labelText: 'Teacher Email'),
+
+                      labelText: 'class name'),
+                ),
+              ),
+
+              new Padding(padding: const EdgeInsets.only(top: 20)),
+
+
+              Container(
+                height: 64,
+                width: 325,
+
+                decoration: BoxDecoration(
+                  color: Color(0xffEFF0F6),
+                  borderRadius: BorderRadius.all(Radius.circular(16))),
+                  child: ListTile(
+                  title: Text(
+                      "${pickeddate.day}/${pickeddate.month}/${pickeddate.year}"),
+                  trailing: Icon(Icons.keyboard_arrow_down),
+                  onTap: _pickDate,
+                ),
+              ),
+              new Padding(padding: const EdgeInsets.only(top: 20)),
+
+              Container(
+                decoration: BoxDecoration(
+                    color: Color(0xffEFF0F6),
+                    borderRadius: BorderRadius.all(Radius.circular(16))),
+                child: ListTile(
+                  title: Text("${start.hour}" + ":" + startmin),
+                  trailing: Icon(Icons.keyboard_arrow_down),
+                  onTap: _pickStartTime,
+                ),
+              ),
+              new Padding(padding: const EdgeInsets.only(top: 20)),
+
+              Container(
+                decoration: BoxDecoration(
+                    color: Color(0xffEFF0F6),
+                    borderRadius: BorderRadius.all(Radius.circular(16))),
+                child: ListTile(
+                  title: Text("${end.hour}" + ":" + endmin),
+                  trailing: Icon(Icons.keyboard_arrow_down),
+                  onTap: _pickEndTime,
+                ),
+              ),
+
+              new Padding(padding: const EdgeInsets.only(top: 20)),
+
+              flatButton(
+                  "Generate QR",
+                  GeneratePage(
+                      pickeddate, start, end, classnameContoller.text, id, cid)),
+            ],
+          ),
         ),
       ),
     );
@@ -207,11 +261,13 @@ class _ClassDetailsPageState extends State<ClassDetailsPage> {
       },
       child: Text(
         text,
-        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+        style: TextStyle(color: Color(0xffF7F7FC),fontFamily: "Poppins", fontWeight:FontWeight.w600),
       ),
+      color: Color(0xff5F2EEA),
       shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.blue, width: 3.0),
-          borderRadius: BorderRadius.circular(20.0)),
+          //side: BorderSide(color: Colors.blue, width: 3.0),style: TextStyle(color: Color(0xffF7F7FC),fontFamily: "Poppins", fontWeight:FontWeight.w600),
+
+          borderRadius: BorderRadius.circular(40.0)),
     );
   }
 }
