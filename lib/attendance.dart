@@ -12,6 +12,7 @@ class AttendancePage extends StatefulWidget {
 
 class _AttendancePageState extends State<AttendancePage> {
   Map attendance;
+  Color bg;
 
   _AttendancePageState(this.attendance);
 
@@ -53,39 +54,30 @@ class _AttendancePageState extends State<AttendancePage> {
                   itemCount: attendance.length,
                   itemBuilder: (BuildContext context, int index) {
                     String key1 = attendance.keys.elementAt(index);
-                    Color bg;
-                    void pic(){
-                      if(((attendance[key1].toDouble())/100) >= 75 &&((attendance[key1].toDouble()))/100<=100){
-                        setState(() {
-                          bg = Colors.green;
-                        });
+                    
+                   @override
+                   Color returner(int a){
+
+                      if(a >= 75 && a <=100){
+                        return Colors.green;
                       }
-                      if(((attendance[key1].toDouble())/100) >=40 &&((attendance[key1].toDouble())/100)< 75){
-                        setState(() {
-                          bg = Colors.yellow;
-                        });
+                       if(a >= 40 && a <=74){
+                        return Colors.amber;
                       }
-                      if(((attendance[key1].toDouble())/100 ) >= 0 && ((attendance[key1].toDouble())/100) < 40){
-                        setState(() {
-                          bg = Colors.red;
-                        });
+                      else{
+                        return Colors.red;
                       }
 
-                    }
-                   @override
-                    void initState() {
-                      // TODO: implement initState
-                      super.initState();
-                      pic();
-                    }
+
+                   }
                     return Center(
                       child: new Row(
                         children: <Widget>[
                           new Padding(padding: const EdgeInsets.all(7)),
                           Container(
 
-                              height: 82,
-                              width: 181,
+                              height: 75,
+                              width: 140,
                               decoration: BoxDecoration(
                                 color: Color(0xff661EFF),
                                 borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -93,7 +85,7 @@ class _AttendancePageState extends State<AttendancePage> {
                               child: Center(
                                   child: Center(
                                     child: new Text(
-                                key1 + ': ',
+                                key1 + ' :',
                                 style: TextStyle(
                                       fontFamily: 'Poppins',
                                       fontSize: 24,
@@ -104,16 +96,17 @@ class _AttendancePageState extends State<AttendancePage> {
                           Container(
                             padding: EdgeInsets.only(left: 15),
                              height: 130,
-                             width: 130,
+                             width: 198,
                              child: Center(
-                               child: CircularPercentIndicator(radius: 120,
+                               child: CircularPercentIndicator(radius: 100,
                                    lineWidth: 10.0,
                                    percent:(attendance[key1].toDouble())/100,
                                   // percent: 80,
-                                   backgroundColor: Colors.grey,
+                                   backgroundColor: Colors.grey[400],
 
                                   //progressColor :bg ,
-                                  progressColor: Colors.green,
+                                  
+                                  progressColor: returner(attendance[key1]),
                                    center : new Text(attendance[key1].toStringAsFixed(2) + '%')),
                              ),
                            ),

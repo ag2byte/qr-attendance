@@ -213,19 +213,21 @@ class _ClassDetailsPageState extends State<ClassDetailsPage> {
       });
   }
 
-  String formatTimeOfDay(TimeOfDay tod, DateTime date) {
+ String formatTimeOfDay(TimeOfDay tod, DateTime date) {
     final now = date;
     final dt = DateTime(now.year, now.month, now.day, tod.hour, tod.minute);
-    final format = DateFormat('yyyy-MM-dd HH:MM:ss'); 
+    final format = DateFormat('yyyy-MM-dd HH:mm:ss');
     return format.format(dt);
   }
-
+  
   Widget flatButton(String text, Widget widget) {
     return FlatButton(
       padding: EdgeInsets.all(15.0),
       onPressed: () async {
+        print(start);
         start1 = DateTime.parse(formatTimeOfDay(start, pickeddate));
         end1 = DateTime.parse(formatTimeOfDay(end, pickeddate));
+        print(start1);
         ClassDetailSchema s1 =
             new ClassDetailSchema(classnameContoller.text, start1, end1, id);
         Map data = s1.toJson();
