@@ -120,7 +120,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
                   controller: passwordController,
                   decoration: InputDecoration(
                       border: InputBorder.none,
-                      prefixIcon:Icon(Icons.remove_red_eye_outlined ),
+                      prefixIcon:Icon(Icons.remove_red_eye),
                       //border: UnderlineInputBorder(),
                       labelText: 'Password',
                       suffixIcon: Icon(Icons.clear)),
