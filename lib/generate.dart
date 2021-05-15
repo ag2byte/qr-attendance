@@ -160,7 +160,7 @@ class GeneratePageState extends State<GeneratePage> {
 
                           child: Center(
                             child: Text(
-                                'Class Name'
+                                classname
                             ),
                           ),
                         ),
@@ -202,7 +202,7 @@ class GeneratePageState extends State<GeneratePage> {
 
                             child: Center(
                               child: Text(
-                                  'Class Name'
+                                  'Class Date'
                               ),
                             ),
                           ),
@@ -235,81 +235,7 @@ class GeneratePageState extends State<GeneratePage> {
 
                             child: Center(
                               child: Text(
-                                  'Class Name'
-                              ),
-                            ),
-                          ),
-
-                        ],
-                      ),
-
-                      new Padding(padding: const EdgeInsets.only(top: 20)),
-
-                      Row(
-                        children: [
-                          Container(
-                            height: 45,
-                            width: 170,
-
-                            decoration: BoxDecoration(
-                              color: Color(0xffFCFCFC),
-                              borderRadius: BorderRadius.all(Radius.circular(0)),
-                              border: Border(
-                                top:  BorderSide(
-                                  color: Colors.purple,
-                                  width: 0.7,
-                                ),
-                                bottom:  BorderSide(
-                                  color: Colors.purple,
-                                  width: 0.7,
-                                ),
-                                left:  BorderSide(
-                                  color: Colors.purple,
-                                  width: 0.7,
-                                ),
-                                right:  BorderSide(
-                                  color: Colors.purple,
-                                  width: 0.7,
-                                ),
-                              ),
-                            ),
-
-                            child: Center(
-                              child: Text(
-                                  'Class Name'
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 45,
-                            width: 170,
-
-                            decoration: BoxDecoration(
-                              color: Color(0xffFCFCFC),
-                              borderRadius: BorderRadius.all(Radius.circular(0)),
-                              border: Border(
-                                top:  BorderSide(
-                                  color: Colors.purple,
-                                  width: 0.7,
-                                ),
-                                bottom:  BorderSide(
-                                  color: Colors.purple,
-                                  width: 0.7,
-                                ),
-                                left:  BorderSide(
-                                  color: Colors.purple,
-                                  width: 0.7,
-                                ),
-                                right:  BorderSide(
-                                  color: Colors.purple,
-                                  width: 0.7,
-                                ),
-                              ),
-                            ),
-
-                            child: Center(
-                              child: Text(
-                                  'Class Name'
+                                  formatTimeOfDay(start, date).substring(0,10)
                               ),
                             ),
                           ),
@@ -350,7 +276,7 @@ class GeneratePageState extends State<GeneratePage> {
 
                             child: Center(
                               child: Text(
-                                  'Class Name'
+                                  'Start time'
                               ),
                             ),
                           ),
@@ -383,7 +309,81 @@ class GeneratePageState extends State<GeneratePage> {
 
                             child: Center(
                               child: Text(
-                                  'Class Name'
+                                  (start.hour.toString()+":"+start.minute.toString())
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
+
+                      new Padding(padding: const EdgeInsets.only(top: 20)),
+
+                      Row(
+                        children: [
+                          Container(
+                            height: 45,
+                            width: 170,
+
+                            decoration: BoxDecoration(
+                              color: Color(0xffFCFCFC),
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                              border: Border(
+                                top:  BorderSide(
+                                  color: Colors.purple,
+                                  width: 0.7,
+                                ),
+                                bottom:  BorderSide(
+                                  color: Colors.purple,
+                                  width: 0.7,
+                                ),
+                                left:  BorderSide(
+                                  color: Colors.purple,
+                                  width: 0.7,
+                                ),
+                                right:  BorderSide(
+                                  color: Colors.purple,
+                                  width: 0.7,
+                                ),
+                              ),
+                            ),
+
+                            child: Center(
+                              child: Text(
+                                  'End time'
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 45,
+                            width: 170,
+
+                            decoration: BoxDecoration(
+                              color: Color(0xffFCFCFC),
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                              border: Border(
+                                top:  BorderSide(
+                                  color: Colors.purple,
+                                  width: 0.7,
+                                ),
+                                bottom:  BorderSide(
+                                  color: Colors.purple,
+                                  width: 0.7,
+                                ),
+                                left:  BorderSide(
+                                  color: Colors.purple,
+                                  width: 0.7,
+                                ),
+                                right:  BorderSide(
+                                  color: Colors.purple,
+                                  width: 0.7,
+                                ),
+                              ),
+                            ),
+
+                            child: Center(
+                              child: Text(
+                                  (end.hour.toString()+":"+end.minute.toString())
                               ),
                             ),
                           ),

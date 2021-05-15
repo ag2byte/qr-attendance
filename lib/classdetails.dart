@@ -112,7 +112,7 @@ class _ClassDetailsPageState extends State<ClassDetailsPage> {
                   controller: classnameContoller,
                   decoration: InputDecoration(
                       border: InputBorder.none,
-                      prefixIcon:Icon(Icons.edit_sharp ),
+                      prefixIcon:Icon(Icons.edit),
                       //  border: UnderlineInputBorder(),
                       //labelText: 'Teacher Email'),
 
