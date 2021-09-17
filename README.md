@@ -15,6 +15,9 @@ Files-
 - `scan.dart` - Allows scanning of the QR code and creates a request at the server for marking attendance
 - `attendance.dart` - Allows students to check their attendance
 
+### NOTE:
+This repo is only the frontend of the app. Therefore it contains phrases like `SERVER ENDPOINT` which are aliases to the original API. This application cannot be run as a standalone flutter app. To get access to the server, please contact the contributors of this project.
+
 
 Video demoes:
 - [Teacher view](https://drive.google.com/file/d/17H8-fRWq68B2SRs3XKslGKJgzIgY7PMK/view?usp=sharing)
