@@ -162,7 +162,7 @@ class _LoginStudentPageState extends State<LoginStudentPage> {
         print(client.hashCode);
         try {
           var uriResponse = await client.post(
-            Uri.parse('https://qrspine.herokuapp.com/token'),
+            Uri.parse('SERVER TOKEN ENDPOINT'),
             headers: {"Content-Type": "application/json;charset=UTF-8"},
             body: body1,
           );

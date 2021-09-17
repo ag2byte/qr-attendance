@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
 
         try {
           await client.get(
-            Uri.parse('https://qrspine.herokuapp.com/'),
+            Uri.parse('SERVER ENDPOINT'),
           );
         } finally {
           client.close();

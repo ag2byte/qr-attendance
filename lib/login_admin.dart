@@ -149,7 +149,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
         var client = http.Client();
         try {
           var uriResponse = await client.post(
-            Uri.parse('https://qrspine.herokuapp.com/token'),
+            Uri.parse('SERVER TOKEN ENDPOINT'),
             headers: {"Content-Type": "application/json;charset=UTF-8"},
             body: body1,
           );

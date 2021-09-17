@@ -129,7 +129,7 @@ class _ScanPageState extends State<ScanPage> {
                   print(client.hashCode);
                   try {
                     var uriResponse = await client.post(
-                      Uri.parse('https://qrspine.herokuapp.com/attend'),
+                      Uri.parse('SERVER ATTENDANCE ENDPOINT'),
                       headers: {"Content-Type": "application/json;charset=UTF-8"},
                       body: body1,
                     );
@@ -196,7 +196,7 @@ class _ScanPageState extends State<ScanPage> {
         print(client.hashCode);
         try {
           var uriResponse = await client.get(
-            Uri.parse('https://qrspine.herokuapp.com/getattendance?res=' + sid),
+            Uri.parse('SERVER ENDPOINT TO GET ATTENDANCE OF SID'),
             headers: {"Content-Type": "application/json;charset=UTF-8"},
           );
           print('sent');

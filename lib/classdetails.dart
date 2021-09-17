@@ -246,7 +246,7 @@ class _ClassDetailsPageState extends State<ClassDetailsPage> {
           var client = http.Client();
           try {
             var uriResponse = await client.post(
-              Uri.parse('https://qrspine.herokuapp.com/addclass'),
+              Uri.parse('SERVER ADD CLASS ENDPOINT'),
               headers: {"Content-Type": "application/json;charset=UTF-8"},
               body: body1,
             );
